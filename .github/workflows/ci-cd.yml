@@ -14,7 +14,8 @@ jobs:
   # ---------------------------------------------------------------
   test:
     name: Lint & Unit Tests
-    runs-on: ubuntu-latest
+    # Python 3.7 is only available on ubuntu-22.04; ubuntu-latest (24.04) dropped it.
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v4

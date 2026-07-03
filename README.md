@@ -4,10 +4,10 @@ Upload a photo and discover which Bollywood celebrity you resemble. The app dete
 the face in your image, extracts a deep facial embedding with **VGGFace (ResNet-50)**,
 and finds the closest match among **8,600+** celebrity images using cosine similarity.
 
-> ### 🔗 Live Demo
-> https://Hamzurna-celebrity-face-match.hf.space
+> ### 🔗 Live Demos (Hugging Face Spaces)
 >
-> Deployed on Hugging Face Spaces.
+> - **Streamlit app** (face match UI): https://Hamzurna-celebrity-face-match.hf.space
+> - **REST API** (FastAPI, V2 model): https://hamzurna-celebrity-face-match-3b11cfc.hf.space — interactive docs at [`/docs`](https://hamzurna-celebrity-face-match-3b11cfc.hf.space/docs)
 
 ---
 

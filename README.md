@@ -5,7 +5,7 @@ the face in your image, extracts a deep facial embedding with **VGGFace (ResNet-
 and finds the closest match among **8,600+** celebrity images using cosine similarity.
 
 > ### 🔗 Live Demo
-> **👉 [Try it here](https://Hamzurna-celebrity-face-match.hf.space)**
+> https://Hamzurna-celebrity-face-match.hf.space
 >
 > Deployed on Hugging Face Spaces.
 
@@ -13,10 +13,9 @@ and finds the closest match among **8,600+** celebrity images using cosine simil
 
 ## ✨ Features
 
-- 📤 Upload any face photo (`jpg`, `jpeg`, `png`)
+- 📤 Upload any face photo ( just face photo ) (`jpg`, `jpeg`, `png`)
 - 🧠 Face detection with **MTCNN**
 - 🧬 Deep feature extraction with **VGGFace / ResNet-50**
-- 📊 Closest celebrity match via **cosine similarity** + similarity score
 - 🎨 Clean, modern Streamlit UI
 - 🐳 Fully containerized with Docker
 
@@ -205,8 +204,6 @@ minikube service celebrity-face-api --url                     # get the URL
 
 ---
 
-## 👤 Author
 
-**Hamza Akbar** — [@Hamza71110](https://github.com/Hamza71110)
 
 🚀 Powered by TensorFlow • VGGFace • Streamlit

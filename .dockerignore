@@ -1,0 +1,17 @@
+# Virtual environment & IDE
+.venv/
+.idea/
+__pycache__/
+*.pyc
+
+# Local runtime / scratch data not needed inside the image
+uploads/
+dataset/
+sample/
+
+# VCS & misc
+.git/
+.gitignore
+*.log
+
+# Keep: app.py, requirements.txt, embedding.pkl, filenames.pkl, data/

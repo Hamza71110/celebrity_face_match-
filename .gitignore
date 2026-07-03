@@ -1,0 +1,32 @@
+# ===== User-requested exclusions =====
+dataset/
+sample/
+uploads/
+data_downloader.py
+embedding.pkl
+filenames.pkl
+
+# ===== Python / environment =====
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+
+# ===== IDE / tooling =====
+.idea/
+.vscode/
+.claude/
+
+# ===== Docker helper / build artifacts (local only) =====
+docker_bootstrap.ps1
+bootstrap.log
+build.out.log
+build.err.log
+build.pid
+
+# ===== OS =====
+Thumbs.db
+.DS_Store

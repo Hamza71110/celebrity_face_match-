@@ -16,7 +16,6 @@ and finds the closest match among **8,600+** celebrity images using cosine simil
 - 📤 Upload any face photo ( just face photo ) (`jpg`, `jpeg`, `png`)
 - 🧠 Face detection with **MTCNN**
 - 🧬 Deep feature extraction with **VGGFace / ResNet-50**
-- 📊 Closest celebrity match via **cosine similarity** + similarity score
 - 🎨 Clean, modern Streamlit UI
 - 🐳 Fully containerized with Docker
 

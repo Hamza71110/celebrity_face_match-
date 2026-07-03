@@ -1,0 +1,70 @@
+name: CI/CD Pipeline
+
+# Continuous Integration (tests on every push/PR) + Continuous Delivery
+# (build the model-serving Docker image on pushes to main).
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # ---------------------------------------------------------------
+  # CI - lightweight tests (no heavy TensorFlow install, stays fast)
+  # ---------------------------------------------------------------
+  test:
+    name: Lint & Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.7"
+
+      - name: Install test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          # only what the smoke tests need (heavy libs are imported lazily)
+          pip install numpy==1.18.5 fastapi==0.83.0 starlette==0.19.1 \
+                      python-multipart==0.0.5 requests==2.31.0 \
+                      pytest==7.4.4 flake8==5.0.4
+
+      - name: Lint (syntax errors / undefined names only)
+        run: flake8 src deployment training tests --count --select=E9,F63,F7,F82 --show-source --statistics
+
+      - name: Run smoke tests
+        run: pytest tests/ -v
+
+  # ---------------------------------------------------------------
+  # CD - build the FastAPI serving image (validates containerization)
+  # ---------------------------------------------------------------
+  docker-build:
+    name: Build API Docker Image
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.event_name == 'push'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build serving image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: deployment/Dockerfile
+          tags: celebrity-face-api:v2
+          push: false
+          load: true
+
+      - name: Smoke-check the image starts
+        run: |
+          docker run -d --name api -p 8000:8000 celebrity-face-api:v2
+          sleep 25
+          curl -f http://localhost:8000/health || (docker logs api && exit 1)
+          docker rm -f api

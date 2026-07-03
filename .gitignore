@@ -6,6 +6,16 @@ data_downloader.py
 embedding.pkl
 filenames.pkl
 
+# ===== MLflow / model artifacts (large or regenerable) =====
+mlruns/
+mlartifacts/
+mlflow.db
+models/v1_baseline.h5
+models/*_curves.png
+# NOTE: models/v2_transfer.h5 (14 MB) + models/labels.json + *_metrics.json ARE
+# committed so the API image and Kubernetes deployment work out of the box.
+# v1_baseline.h5 is 296 MB (over GitHub's 100 MB limit); regenerate via training.
+
 # ===== Python / environment =====
 .venv/
 venv/

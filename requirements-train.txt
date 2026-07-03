@@ -1,0 +1,10 @@
+# Training + MLflow dependencies (Python 3.7).
+# Installed ON TOP of the base requirements.txt. Kept separate so the Streamlit
+# app's runtime (requirements.txt) is never disturbed.
+#
+#   pip install -r requirements.txt -r requirements-train.txt
+#
+# MLflow 1.30.x is the last line that still supports Python 3.7.
+mlflow==1.30.0
+matplotlib==3.5.3
+protobuf==3.20.3

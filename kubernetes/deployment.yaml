@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: celebrity-face-api
+  labels:
+    app: celebrity-face-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: celebrity-face-api
+  template:
+    metadata:
+      labels:
+        app: celebrity-face-api
+    spec:
+      containers:
+        - name: celebrity-face-api
+          # Built from deployment/Dockerfile. On Minikube, build the image into
+          # the cluster's Docker daemon first:
+          #   eval $(minikube docker-env)
+          #   docker build -f deployment/Dockerfile -t celebrity-face-api:v2 .
+          image: celebrity-face-api:v2
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+          env:
+            - name: SERVED_MODEL
+              value: "v2"
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "1Gi"
+            limits:
+              cpu: "2"
+              memory: "3Gi"
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 6
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 40
+            periodSeconds: 15
+            timeoutSeconds: 5
+            failureThreshold: 6

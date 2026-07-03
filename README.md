@@ -100,8 +100,6 @@ celebrity_face_match/
 
 ---
 
-## 👤 Author
 
-**Hamza Akbar** — [@Hamza71110](https://github.com/Hamza71110)
 
 🚀 Powered by TensorFlow • VGGFace • Streamlit

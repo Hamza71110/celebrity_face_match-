@@ -5,7 +5,7 @@ the face in your image, extracts a deep facial embedding with **VGGFace (ResNet-
 and finds the closest match among **8,600+** celebrity images using cosine similarity.
 
 > ### 🔗 Live Demo
-> **👉 [Try it here](https://Hamzurna-celebrity-face-match.hf.space)**
+> https://Hamzurna-celebrity-face-match.hf.space
 >
 > Deployed on Hugging Face Spaces.
 

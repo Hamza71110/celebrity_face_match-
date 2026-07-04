@@ -1,0 +1,8 @@
+# Dark theme so all Streamlit widgets (inputs, spinner, tabs, uploader text)
+# match the app's dark UI instead of falling back to the default light theme.
+[theme]
+base = "dark"
+primaryColor = "#7C3AED"
+backgroundColor = "#0b1120"
+secondaryBackgroundColor = "#111a2e"
+textColor = "#E5E7EB"

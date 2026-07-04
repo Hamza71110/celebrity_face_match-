@@ -13,9 +13,14 @@ and finds the closest match among **8,600+** celebrity images using cosine simil
 
 ## ✨ Features
 
-- 📤 Upload any face photo ( just face photo ) (`jpg`, `jpeg`, `png`)
-- 🧠 Face detection with **MTCNN**
+- 📤 **Upload** a face photo (`jpg`, `jpeg`, `png`) **or** 📸 **capture** one live from your camera
+- 🧠 **Robust face detection** with **MTCNN** — works on full-body / cluttered photos,
+  auto-selects the **main (largest) face**, with clear messages for blurry / no-face /
+  ambiguous multi-face images
 - 🧬 Deep feature extraction with **VGGFace / ResNet-50**
+- 🏆 **Top-3** look-alikes with a visual **confidence bar** in a unified "You vs Celebrity" card
+- 💭 Optional "who do *you* think you look like?" prompt
+- 📱 **Mobile-responsive** UI + a **Contact Me** page
 - 🎨 Clean, modern Streamlit UI
 - 🐳 Fully containerized with Docker
 

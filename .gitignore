@@ -1,3 +1,15 @@
+# ===== Google logging feature — kept local, not pushed to GitHub =====
+gsheet_logger.py
+GOOGLE_SHEETS_SETUP.md
+
+# ===== Secrets / credentials (NEVER commit these) =====
+.streamlit/secrets.toml
+*service-account*.json
+service_account.json
+gcp*.json
+credentials.json
+client_secret*.json
+
 # ===== User-requested exclusions =====
 dataset/
 sample/

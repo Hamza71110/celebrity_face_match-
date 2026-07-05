@@ -87,12 +87,15 @@ async def predict(file: UploadFile = File(...), top_k: int = 5):
     # Run the heavy CPU work (MTCNN + VGGFace + classifier) in a threadpool so
     # the event loop stays free to answer the /health liveness probe. Otherwise
     # a single prediction blocks /health and Kubernetes restarts the pod.
-    embedding = await run_in_threadpool(face_utils.embedding_from_bytes, data)
-    if embedding is None:
-        raise HTTPException(status_code=422, detail="No face detected in image.")
+    result = await run_in_threadpool(face_utils.analyze_bytes, data)
+    if "error" in result:
+        raise HTTPException(
+            status_code=422,
+            detail=face_utils.FACE_ERROR_MESSAGES[result["error"]],
+        )
 
     predictions = await run_in_threadpool(
-        inference.predict_from_embedding, embedding, MODEL_VERSION, top_k
+        inference.predict_from_embedding, result["embedding"], MODEL_VERSION, top_k
     )
     return {
         "filename": file.filename,

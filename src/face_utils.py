@@ -47,17 +47,56 @@ def _bytes_io(data):
     return io.BytesIO(data)
 
 
-def detect_and_crop(bgr_image):
-    """Return the largest detected face crop, or None if no face is found."""
+# Distinct, user-friendly reasons the pipeline can reject an image (mirrors the
+# Streamlit app). The API returns these strings to the client.
+FACE_ERROR_MESSAGES = {
+    "blurry": "Image is too blurry or low quality — please upload a clearer photo.",
+    "no_face": "No face detected — please upload a clear photo that contains a face.",
+    "multiple_faces": ("Multiple faces detected — please upload a photo where you "
+                       "are the main person."),
+}
+
+
+def is_blurry(bgr_image):
+    """True if the image is too low-quality for reliable detection."""
+    import cv2
+    gray = cv2.cvtColor(bgr_image, cv2.COLOR_BGR2GRAY)
+    return cv2.Laplacian(gray, cv2.CV_64F).var() < config.BLUR_THRESHOLD
+
+
+def detect_main_face(bgr_image):
+    """Select the main (largest) face, mirroring the Streamlit app.
+
+    Returns {'face': crop} for the largest face, or {'error': code} where code
+    is one of 'blurry', 'no_face', 'multiple_faces'. Handles full-body /
+    cluttered photos (uses the biggest face) and only rejects a multi-face image
+    when no single face clearly dominates.
+    """
     detector = get_detector()
     results = detector.detect_faces(bgr_image)
-    if not results:
-        return None
-    # pick the highest-confidence detection
-    best = max(results, key=lambda r: r.get("confidence", 0))
-    x, y, w, h = best["box"]
-    x, y = max(0, x), max(0, y)
-    return bgr_image[y:y + h, x:x + w]
+
+    boxes = []
+    for r in results:
+        x, y, w, h = r["box"]
+        x, y = max(0, x), max(0, y)
+        if w > 0 and h > 0:
+            boxes.append((w * h, x, y, w, h))
+    boxes.sort(reverse=True, key=lambda b: b[0])
+
+    if not boxes:
+        return {"error": "blurry" if is_blurry(bgr_image) else "no_face"}
+    if (len(boxes) >= 2
+            and boxes[1][0] / boxes[0][0] >= config.FACE_AMBIGUITY_RATIO):
+        return {"error": "multiple_faces"}
+
+    _, x, y, w, h = boxes[0]
+    face = bgr_image[y:y + h, x:x + w]
+    return {"face": face} if face.size else {"error": "no_face"}
+
+
+def detect_and_crop(bgr_image):
+    """Backward-compatible helper: the largest face crop, or None."""
+    return detect_main_face(bgr_image).get("face")
 
 
 def embed_face(face_bgr):
@@ -72,10 +111,15 @@ def embed_face(face_bgr):
     return get_vggface().predict(arr).flatten()
 
 
-def embedding_from_bytes(data):
-    """Full pipeline: uploaded bytes -> 2048-d embedding (or None if no face)."""
+def analyze_bytes(data):
+    """Full pipeline: uploaded bytes -> {'embedding': vec} or {'error': code}."""
     bgr = image_bytes_to_bgr(data)
-    face = detect_and_crop(bgr)
-    if face is None or face.size == 0:
-        return None
-    return embed_face(face)
+    result = detect_main_face(bgr)
+    if "error" in result:
+        return result
+    return {"embedding": embed_face(result["face"])}
+
+
+def embedding_from_bytes(data):
+    """Backward-compatible: full pipeline -> 2048-d embedding, or None."""
+    return analyze_bytes(data).get("embedding")

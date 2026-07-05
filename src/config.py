@@ -23,6 +23,11 @@ LABELS_PATH = os.path.join(MODELS_DIR, "labels.json")
 IMG_SIZE = 224
 EMBED_DIM = 2048  # VGGFace ResNet50 avg-pool output size
 
+# Robust face-detection tuning (mirrors the Streamlit app so the API behaves the
+# same on full-body / cluttered / multi-face photos).
+BLUR_THRESHOLD = 30.0          # Laplacian variance below this = "too blurry"
+FACE_AMBIGUITY_RATIO = 0.85    # 2nd-largest / largest face area >= this = ambiguous
+
 # MLflow. A SQLite backend (not the plain file store) is used so the Model
 # Registry works -> required for the "registered model" deliverable. Artifacts
 # still land under ./mlartifacts. Override with the MLFLOW_TRACKING_URI env var.

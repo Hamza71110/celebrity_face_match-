@@ -2,6 +2,7 @@
 gsheet_logger.py
 GOOGLE_SHEETS_SETUP.md
 verify_logging.py
+deploy_hf.py
 
 # ===== Secrets / credentials (NEVER commit these) =====
 .streamlit/secrets.toml

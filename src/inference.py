@@ -1,9 +1,4 @@
-"""Prediction helpers used by the serving API.
 
-Loads a trained model + label map once and exposes top-k prediction. The V2
-model expects a 2048-d VGGFace embedding; the V1 model expects a raw image
-tensor. The API primarily serves V2.
-"""
 import numpy as np
 
 from src import config, data_loader

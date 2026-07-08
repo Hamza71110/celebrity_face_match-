@@ -10,8 +10,7 @@ import streamlit as st
 from PIL import Image
 from sklearn.metrics.pairwise import cosine_similarity
 
-# Optional usage-logging module (kept out of the repo). The app runs fine
-# without it; logging simply stays off when it's absent.
+
 try:
     import gsheet_logger
 except Exception:
@@ -28,10 +27,7 @@ st.set_page_config(
 )
 
 
-# --------------------------------------------------------------------------- #
-# Version-compat shims (deploy target is Streamlit 1.23.1; local dev may be
-# newer). These keep the app working across versions.
-# --------------------------------------------------------------------------- #
+
 def _rerun():
     (getattr(st, "rerun", None) or st.experimental_rerun)()
 
@@ -47,9 +43,7 @@ def show_img(img):
     st.image(img, **_IMG_KW)
 
 
-# --------------------------------------------------------------------------- #
-# Tunable detection thresholds (adjust after real-world testing)
-# --------------------------------------------------------------------------- #
+#
 BLUR_THRESHOLD = 30.0      # lower  -> image treated as "too blurry"
 AMBIGUITY_RATIO = 0.85     # 2nd-largest / largest face; higher -> "ambiguous"
 
@@ -59,9 +53,7 @@ MSG_MULTI = ("Multiple faces detected — please upload a photo where you are th
              "main person.")
 
 
-# --------------------------------------------------------------------------- #
-# Cached heavy resources
-# --------------------------------------------------------------------------- #
+
 @st.cache_resource(show_spinner=False)
 def load_detector():
     from mtcnn import MTCNN
@@ -103,9 +95,9 @@ def get_secrets():
     return None
 
 
-# --------------------------------------------------------------------------- #
+
 # Detection + matching
-# --------------------------------------------------------------------------- #
+
 def decode_bgr(data):
     return cv2.imdecode(np.frombuffer(data, np.uint8), cv2.IMREAD_COLOR)
 
@@ -171,9 +163,7 @@ def top_matches(features, matrix, names, k=3):
     return out
 
 
-# =========================================================================== #
-# STYLES
-# =========================================================================== #
+
 BASE_CSS = """
 <style>
 .stApp{ background:radial-gradient(1200px 600px at 50% -10%,#182238,#0b1120 60%);
@@ -315,9 +305,7 @@ if "stage" not in st.session_state:
 STAGE = st.session_state.stage
 
 
-# --------------------------------------------------------------------------- #
-# Rendering helpers
-# --------------------------------------------------------------------------- #
+
 def show_error(msg):
     st.markdown('<div class="error-card">' + msg + '</div>', unsafe_allow_html=True)
 
@@ -380,11 +368,7 @@ def reset_to_idle():
     st.session_state.stage = "idle"
 
 
-# =========================================================================== #
-# FLOW:  idle  ->  ask  ->  done
-# =========================================================================== #
 
-# ---- ASK: focused question over a blurred version of the user's own photo ----
 if STAGE == "ask":
     data = st.session_state.get("data", b"")
     mime = "image/png" if data[:8] == b"\x89PNG\r\n\x1a\n" else "image/jpeg"

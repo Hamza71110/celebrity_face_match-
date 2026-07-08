@@ -4,9 +4,9 @@ Two model versions were trained and tracked with MLflow.
 
 | Metric | V1 - Baseline CNN | V2 - Transfer (VGGFace) |
 |--------|-------------------|--------------------------|
-| Validation accuracy (top-1) | 1.09% | 96.76% |
+| Validation accuracy (top-1) | 1.95% | 96.18% |
 | Validation top-5 accuracy | n/a | 98.96% |
-| Validation loss | 4.5923 | 0.2873 |
+| Validation loss | 4.5911 | 0.2925 |
 
 ## Analysis
 
@@ -15,4 +15,4 @@ Two model versions were trained and tracked with MLflow.
 
 **Conclusion:** V2 is the deployed model (served by the FastAPI API and the Kubernetes deployment).
 
-> 
+> Note: the numbers above are from a short demo run (V1 was trained for a > few steps on a data subset for quick reproducibility). Re-run > `python -m training.train --model v1 --epochs 30` for a full baseline; > the transfer-learning gap remains large regardless.

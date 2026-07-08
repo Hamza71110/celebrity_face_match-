@@ -1,6 +1,7 @@
 # ===== Google logging feature — kept local, not pushed to GitHub =====
 gsheet_logger.py
 GOOGLE_SHEETS_SETUP.md
+verify_logging.py
 
 # ===== Secrets / credentials (NEVER commit these) =====
 .streamlit/secrets.toml

@@ -1,14 +1,3 @@
-"""Data loading utilities.
-
-Two entry points:
-
-* ``load_embedding_dataset`` - returns the pre-computed VGGFace embeddings
-  (embedding.pkl) with integer labels derived from filenames.pkl. Used by the
-  V2 transfer-learning head (trains in seconds on CPU).
-
-* ``build_image_generators`` - builds Keras ImageDataGenerators straight from
-  the ``data/`` folder. Used by the V1 baseline CNN (trained from raw pixels).
-"""
 import json
 import os
 import pickle
@@ -32,7 +21,7 @@ def _class_from_filename(path):
 
 
 def build_label_map():
-    """Return (classes, class_to_idx) sorted alphabetically for determinism."""
+    
     filenames = pickle.load(open(config.FILENAMES_PKL, "rb"))
     classes = sorted({_class_from_filename(f) for f in filenames})
     class_to_idx = {c: i for i, c in enumerate(classes)}
@@ -40,12 +29,7 @@ def build_label_map():
 
 
 def load_embedding_dataset():
-    """Load (X, y, classes) from the pre-computed VGGFace embeddings.
-
-    X: float32 array (N, 2048)
-    y: int array (N,) of class indices
-    classes: list[str] label names, index == class id
-    """
+    
     embeddings = pickle.load(open(config.EMBEDDING_PKL, "rb"))
     filenames = pickle.load(open(config.FILENAMES_PKL, "rb"))
 
@@ -56,7 +40,7 @@ def load_embedding_dataset():
 
 
 def save_labels(classes, path=None):
-    """Persist the id->label mapping so the API can decode predictions."""
+   
     path = path or config.LABELS_PATH
     config.ensure_models_dir()
     with open(path, "w", encoding="utf-8") as f:
@@ -74,10 +58,7 @@ def load_labels(path=None):
 
 def build_image_generators(img_size=None, batch_size=32, validation_split=0.2,
                            preprocessing_function=None):
-    """Keras generators over data/ for the baseline CNN.
-
-    Returns (train_gen, val_gen, classes).
-    """
+    
     from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
     img_size = img_size or config.IMG_SIZE

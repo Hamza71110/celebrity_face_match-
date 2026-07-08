@@ -81,5 +81,5 @@ st.markdown(f"""
 
 <a class="back-link" href="/" target="_self">← Back to Face Matcher</a>
 
-<div class="app-footer">Made with ❤️ by <b>Hamzurna</b></div>
+<div class="app-footer">Made by <b>Hamzurna</b></div>
 """, unsafe_allow_html=True)

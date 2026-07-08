@@ -1,6 +1,3 @@
-# load image -> face detection and extract its features
-# find cosine distance of current image with all the features
-# recommend that feature
 from keras_vggface.utils import preprocess_input
 from keras_vggface.vggface import VGGFace
 import pickle
@@ -35,7 +32,7 @@ preprocessed_img = preprocess_input(expanded_img)
 result = model.predict(preprocessed_img).flatten()
 #print(result.shape)
 
-# Step-2 :- find cosine distance of current img with all the 8655 features
+# Step-2 :- find cosine distance 
 similarity = []
 for i in range(len(feature_list)):
     similarity.append((cosine_similarity(result.reshape(1,-1), feature_list[i].reshape(1,-1))[0][0]))

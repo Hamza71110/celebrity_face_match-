@@ -1,10 +1,4 @@
-"""Generate the V1-vs-V2 comparison report from saved metrics.
 
-    python -m training.compare
-
-Reads models/v1_baseline_metrics.json and models/v2_transfer_metrics.json
-(produced by training/train.py) and writes training/comparison_report.md.
-"""
 import json
 import os
 

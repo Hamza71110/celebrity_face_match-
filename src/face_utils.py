@@ -1,9 +1,4 @@
-"""Face detection + VGGFace embedding extraction.
 
-Mirrors exactly the preprocessing used in the original app.py / test.py so the
-API produces embeddings compatible with the trained models. Heavy objects
-(MTCNN detector, VGGFace backbone) are lazily created and cached.
-"""
 import numpy as np
 from PIL import Image
 
@@ -47,8 +42,7 @@ def _bytes_io(data):
     return io.BytesIO(data)
 
 
-# Distinct, user-friendly reasons the pipeline can reject an image (mirrors the
-# Streamlit app). The API returns these strings to the client.
+
 FACE_ERROR_MESSAGES = {
     "blurry": "Image is too blurry or low quality — please upload a clearer photo.",
     "no_face": "No face detected — please upload a clear photo that contains a face.",
@@ -65,13 +59,7 @@ def is_blurry(bgr_image):
 
 
 def detect_main_face(bgr_image):
-    """Select the main (largest) face, mirroring the Streamlit app.
-
-    Returns {'face': crop} for the largest face, or {'error': code} where code
-    is one of 'blurry', 'no_face', 'multiple_faces'. Handles full-body /
-    cluttered photos (uses the biggest face) and only rejects a multi-face image
-    when no single face clearly dominates.
-    """
+    
     detector = get_detector()
     results = detector.detect_faces(bgr_image)
 

@@ -1,9 +1,4 @@
-"""Model definitions for the two required versions.
 
-* build_baseline_cnn  -> Model Version 1 (baseline, trained from scratch on pixels)
-* build_transfer_head -> Model Version 2 (improved: classifier head on frozen
-  VGGFace ResNet50 embeddings + regularization)
-"""
 from tensorflow.keras import layers, models, regularizers
 
 from src import config
@@ -32,12 +27,7 @@ def build_baseline_cnn(num_classes, img_size=None):
 
 
 def build_transfer_head(num_classes, embed_dim=None):
-    """Dense classifier head on top of frozen VGGFace embeddings (V2 improved).
-
-    Transfer learning: the heavy VGGFace ResNet50 backbone stays frozen (its
-    2048-d embeddings are pre-computed in embedding.pkl); we only train this
-    lightweight regularized head. This is why V2 trains in seconds on CPU.
-    """
+    
     embed_dim = embed_dim or config.EMBED_DIM
     model = models.Sequential(
         [
